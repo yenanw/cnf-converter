@@ -81,6 +81,7 @@ toCnf f = toCnf' (toNnf f)
     toCnf' = \case
       (Or (And f g) h) -> toCnf' $ And (toCnf' $ Or f h) (toCnf' $ Or g h) -- distribute ORs
       (Or h (And f g)) -> toCnf' $ And (toCnf' $ Or h f) (toCnf' $ Or h g)
+      (Or f g)         -> Or (toCnf' f) (toCnf' g)
       (And f g)        -> And (toCnf' f) (toCnf' g)
       formula          -> formula
 
