@@ -4,7 +4,7 @@ module Converter where
 
 import qualified Formula.Abs                       as F
 import           Formula.Par                       (myLexer, pFormula)
-import           System.Directory.Internal.Prelude (exitFailure)
+import           System.Directory.Internal.Prelude (exitFailure, getArgs)
 
 data Formula = And Formula Formula
              | Or Formula Formula
@@ -18,11 +18,11 @@ instance Show Formula where
   show = formulaStr
 
 {-
-  Assuming the precendence of:
+  Assuming the following precendence (from highest to lowest):
     1. Negation
     2. And
     3. Or
-    4. Implication (though we add extra parenthesis in this case to prevent any ambiguities)
+    4. Implication (though it might ambiguitious, so we add extra parentheses just to be sure)
 -}
 formulaStr :: Formula -> String
 formulaStr = \case
@@ -95,4 +95,10 @@ convert s = do
     Right f -> do
       print (toCnf $ toFormula f)
 
-
+main :: IO()
+main = do
+  getArgs >>= \case
+    f:_ -> convert f
+    _ -> do
+      putStrLn "No formula entered as args."
+      exitFailure
