@@ -1,0 +1,23 @@
+-- Simple grammar for propositional logic
+
+-- A formula is just an expression in this case
+FExp. Formula ::= Exp;
+
+-- Formulas/Expressions
+ELit.   Exp4 ::= Lit;
+
+ENeg.   Exp3 ::= "~" Exp3;
+
+EAnd.   Exp2 ::= Exp2 "&" Exp3;
+EOr.    Exp1 ::= Exp1 "|" Exp2;
+
+EImply. Exp ::= Exp1 "->" Exp;
+
+coercions Exp 4;
+
+-- Literals
+LChar. Lit ::= Proposition;
+LNeg.  Lit ::= "~" Proposition;
+
+-- A literal should be just one single character/letter
+token Proposition (letter (letter | digit)*);
